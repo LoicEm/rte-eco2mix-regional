@@ -89,12 +89,12 @@ class RecordParser:
 
     def parse_consumption(self):
         consumption_key = self.config["consumption"]
-        return self.record["fields"][consumption_key]
+        return self.record["fields"].get(consumption_key)
 
     def parse_production(self):
         production_keys = self.config["production_types"]
         return {
-            production_key: self.record["fields"].get(production_key, 0)
+            production_key: self.record["fields"].get(production_key)
             for production_key in production_keys
         }
 

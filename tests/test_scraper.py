@@ -72,7 +72,7 @@ def test_parse_record():
             "thermique": 5,
             "solaire": 0,
             "hydraulique": 0,
-            "pompage": 0,
+            "pompage": None,
             "ech_physiques": -1,
         },
         "flux": {"flux_physiques_de_grand_est_vers_centre_val_de_loire": 0},
