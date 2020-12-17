@@ -16,3 +16,16 @@ class RegionalEnergyProduction(Base):
     total_consumption = Column(Float)
     production = Column(JSON)
     flux = Column(JSON)
+
+    @classmethod
+    def from_parsed_record(cls, record):
+        return cls(
+            region_code=record["region_code"],
+            region_string=record["region"],
+            dataset_id=record["dataset_id"],
+            record_id=record["record_id"],
+            datetime=record["datetime"],
+            total_consumption=record["total_consumption"],
+            production=record["production"],
+            flux=record["flux"],
+        )
