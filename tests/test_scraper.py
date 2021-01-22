@@ -3,7 +3,7 @@ from unittest.mock import patch
 import arrow
 import pytest
 
-import scraper
+from scraping import scraper
 
 
 def test_get_datetime_query_params():
@@ -30,7 +30,7 @@ def test_get_query_params(live_query, expected_dataset):
     assert tested_query.get_query_params(n_rows=0) == expected_params
 
 
-@patch("scraper.RecordParser")
+@patch("scraping.scraper.RecordParser")
 def test_parse_response_yields_one_result_per_record(mock_parser):
     response_to_parse = {"nhits": 1000, "parameters": {}, "records": [1] * 1000}
     assert len([res for res in scraper.parse_response(response_to_parse)]) == 1000

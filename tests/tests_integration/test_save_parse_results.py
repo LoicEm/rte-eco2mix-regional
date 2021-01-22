@@ -3,7 +3,7 @@ import pytest
 
 from db_schema.dal import DAL
 from db_schema import RegionalEnergyProduction
-from save_parse_results import save_to_db
+from scraping.save_parse_results import save_to_db
 
 load_dotenv("database_test.env", verbose=True)
 
