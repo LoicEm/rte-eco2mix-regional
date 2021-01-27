@@ -1,3 +1,4 @@
+import logging
 from unittest.mock import patch
 
 import arrow
@@ -34,6 +35,26 @@ def test_get_query_params(live_query, expected_dataset):
 def test_parse_response_yields_one_result_per_record(mock_parser):
     response_to_parse = {"nhits": 1000, "parameters": {}, "records": [1] * 1000}
     assert len([res for res in scraper.parse_response(response_to_parse)]) == 1000
+
+
+@patch(
+    "scraping.scraper.RecordParser", **{"return_value.parse.side_effect": KeyError()}
+)
+def test_parse_response_raise_error_by_default_on_missing_key(mock_parser):
+    with pytest.raises(KeyError):
+        list(
+            scraper.parse_response({"records": [{"recordid": 1}]}, on_keyerror="raise")
+        )
+
+
+@patch(
+    "scraping.scraper.RecordParser",
+    **{"return_value.parse.side_effect": KeyError("no_key")}
+)
+def test_parse_response_warns_on_missing_key(mock_parser, caplog):
+    with caplog.at_level(logging.WARNING):
+        list(scraper.parse_response({"records": [{"recordid": 1}]}, on_keyerror="warn"))
+        assert "Error for record 1: 'no_key'" in caplog.text
 
 
 def test_parse_record():

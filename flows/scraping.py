@@ -41,7 +41,7 @@ def get_upload_blob(ref_datetime: arrow.Arrow):
 
 @prefect.task
 def parse_records(records_to_parse):
-    return list(scraper.parse_response(records_to_parse))
+    return list(scraper.parse_response(records_to_parse, on_keyerror="warn"))
 
 
 @prefect.task

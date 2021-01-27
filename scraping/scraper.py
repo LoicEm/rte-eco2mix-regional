@@ -58,9 +58,14 @@ def get_datetime_query_param(end_datetime) -> str:
     return f"date_heure:[{start} TO {end}]"
 
 
-def parse_response(response):
+def parse_response(response, on_keyerror="raise"):
     for record in response["records"]:
-        yield RecordParser(record).parse()
+        try:
+            yield RecordParser(record).parse()
+        except KeyError as err:
+            logger.warning(f"Error for record {record.get('recordid')}: {err}")
+            if on_keyerror == "raise":
+                raise err
 
 
 class RecordParser:
